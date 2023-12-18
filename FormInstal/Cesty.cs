@@ -12,8 +12,11 @@ namespace FormInstal
         public static string AppData => Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
         public static string AddCesta(this string Cesta, string Slozka)
-        { 
-            return Path.Combine(AppData, Slozka);
+        {
+            string CestaVysledek = Path.Combine(Cesta, Slozka);
+            if (!Directory.Exists(CestaVysledek))
+                Directory.CreateDirectory(CestaVysledek);
+            return CestaVysledek;
         }
 
         public static void SaveJson<T>(this T moje, string cesta)

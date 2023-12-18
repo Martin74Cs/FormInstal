@@ -54,5 +54,19 @@ namespace FormInstal
             Akt.Close();
             return;
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string Cesta = Cesty.AppData.AddCesta("Autodesk");
+            if (!File.Exists(Cesta))
+                { MessageBox.Show("Autocad nebyl nalezen"); return; }
+            Cesta = Cesta.AddCesta("ApplicationPlugins");
+            if (!File.Exists(Cesta))
+                { MessageBox.Show("Autocad plugins nebyl nalezen"); return; }
+            Cesta = Cesta.AddCesta("Elektro.bundle");
+            if (!File.Exists(Cesta))
+            { MessageBox.Show("Autocad plugins nebyl nalezen"); return; }
+            label2.Text = Cesta;
+        }
     }
 }
