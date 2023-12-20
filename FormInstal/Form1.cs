@@ -15,7 +15,7 @@ namespace FormInstal
         {
             var Akt = MenuInstal.Aktualizuj();
             //provedení instalace na zadanou cestu
-            var zip = await Install.GetSearchAsync("AcadElektro.zip");
+            var zip = await Install.GetSearchAsync("ElektroBundle.zip");
             //var zip = await Install.GetSearchAsync("instal.zip");
             if (zip.Count < 1)
             {
@@ -47,25 +47,28 @@ namespace FormInstal
             //Na zadané ceste by měly existovat zadané soubory.
 
             //Nactení manifestu z restApi
-            ProgramInfo Nova = await HttpApi.DownloadFile<ProgramInfo>($"api/file/manifest");
+            //ProgramInfo Nova = await HttpApi.DownloadFile<ProgramInfo>($"api/file/manifest");
 
             //uložení manifestu do cesty instalce
-            Nova.SaveJson(Cesta);
+            //Nova.SaveJson(Cesta);
             Akt.Close();
             return;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string Cesta = Cesty.AppData.AddCesta("Autodesk");
-            if (!File.Exists(Cesta))
-                { MessageBox.Show("Autocad nebyl nalezen"); return; }
-            Cesta = Cesta.AddCesta("ApplicationPlugins");
-            if (!File.Exists(Cesta))
-                { MessageBox.Show("Autocad plugins nebyl nalezen"); return; }
-            Cesta = Cesta.AddCesta("Elektro.bundle");
-            if (!File.Exists(Cesta))
-            { MessageBox.Show("Autocad plugins nebyl nalezen"); return; }
+            string Cesta = Path.Combine(Cesty.AppData, "Autodesk");
+            if (!Directory.Exists(Cesta))
+                { MessageBox.Show("Autocad nebyl nalezen"); Close(); return ; }
+
+            Cesta = Path.Combine(Cesta, "ApplicationPlugins");
+            if (!Directory.Exists(Cesta))
+                { MessageBox.Show("Autocad plugins nebyl nalezen"); Close(); return; }
+
+            //Pokud neexistuje bude vztvořeno
+            //Cesta = Cesta.AddCesta("Elektro.bundle");
+            Cesta = Cesta.AddCesta("Test.bundle");
+            //požitá cesta pro instalaci
             label2.Text = Cesta;
         }
     }
