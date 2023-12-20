@@ -70,6 +70,7 @@ namespace FormInstal
             Cesta = Cesta.AddCesta("Test.bundle");
             //požitá cesta pro instalaci
             label2.Text = Cesta;
+
         }
     }
 }
