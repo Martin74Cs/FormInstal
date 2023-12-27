@@ -10,7 +10,17 @@ namespace FormInstal.Trida
     {
         public string Version { get; set; } = string.Empty;
         public DateTime ReleaseDate { get; set; } = DateTime.Now;
-        public Uri DownloadUrl { get; set; } 
+        public Uri DownloadUrl { get; set; }
+    }
+
+    public class InstalInfo
+    {
+        public string Version { get; set; } = string.Empty;
+        public DateTime ReleaseDate { get; set; } = DateTime.Now;
+        public Uri DownloadUrl { get; set; }
+        public string InstalPath { get; set; } = string.Empty;
+        public string InstalFile { get; set; } = string.Empty;
+        public string StartFile { get; set; } = string.Empty;
     }
 
     public class Upload

@@ -31,6 +31,7 @@
             label1 = new Label();
             label2 = new Label();
             Instal = new Button();
+            BStart = new Button();
             SuspendLayout();
             // 
             // label1
@@ -64,11 +65,23 @@
             Instal.UseVisualStyleBackColor = true;
             Instal.Click += Instal_ClickAsync;
             // 
+            // BStart
+            // 
+            BStart.Font = new Font("Segoe UI", 12F);
+            BStart.Location = new Point(666, 28);
+            BStart.Name = "BStart";
+            BStart.Size = new Size(106, 42);
+            BStart.TabIndex = 3;
+            BStart.Text = "Spustit";
+            BStart.UseVisualStyleBackColor = true;
+            BStart.Click += BStart_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(784, 134);
+            Controls.Add(BStart);
             Controls.Add(Instal);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -84,5 +97,6 @@
         private Label label1;
         private Label label2;
         private Button Instal;
+        private Button BStart;
     }
 }
