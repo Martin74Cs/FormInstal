@@ -14,7 +14,7 @@ namespace FormInstal
         public static async Task<List<Upload>> GetSearchAsync(string FileName)
         {
             var http = new HttpApi();
-            var response = await http.GetFromJsonAsync<List<Upload>>($"/api/File/Search/{FileName}");
+            var response = await http.GetFromJsonAsync<List<Upload>>($"/api/Instal/Search/{FileName}");
             if (response == null)
                 return [];
             return response;
@@ -26,7 +26,7 @@ namespace FormInstal
         public static async Task<bool> Download(string StoredFileName, string Uložit)
         {
             var http = new HttpApi();
-            var response = await http.GetAsync($"/api/File/{StoredFileName}");
+            var response = await http.GetAsync($"/api/Instal/{StoredFileName}");
             if (response.IsSuccessStatusCode)
             {
                 //cesta dočasného uložení

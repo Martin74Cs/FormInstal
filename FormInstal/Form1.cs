@@ -28,14 +28,15 @@ namespace FormInstal
             else
             {
                 //PŘI PRVNÍ INSTALACI NESMÍ ADRESAŘ EXISTOVAT.
-                MessageBox.Show($"Adresár pro instalaci již existuje\nNelze pokračovat\nProgram bude UKONČEN");
+                MessageBox.Show($"Adresár pro instalaci již existuje\nProgram je již instalován\nProgram bude UKONČEN");
                 Close();
             }
 
             //string Cesta = Path.Combine(Cesty.AppData, "Autodesk");
-            if (!Directory.Exists(Path.GetDirectoryName(info.InstalPath)))
-            { 
-                MessageBox.Show($"Adresař {Path.GetDirectoryName(info.InstalPath)} nebyl nalezen"); 
+            //if (!Directory.Exists(Path.GetDirectoryName(info.InstalPath)))
+            if (!Directory.Exists(Cesta))
+                { 
+                MessageBox.Show($"Adresař {Cesta} nebyl nalezen\nProgram bude UKONČEN"); 
                 Close(); 
                 return; 
             }
@@ -43,7 +44,7 @@ namespace FormInstal
 
             var Akt = MenuInstal.Aktualizuj();
             //provedení instalace na zadanou cestu
-            var zip = await Install.GetSearchAsync(info.InstalFile);
+            var zip = await Install.GetSearchAsync(Cesta);
             //var zip = await Install.GetSearchAsync("instal.zip");
             if (zip.Count < 1)
             {
