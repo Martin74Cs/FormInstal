@@ -11,10 +11,10 @@ namespace FormInstal
 {
     public class Install
     {
-        public static async Task<List<Upload>> GetSearchAsync(string FileName)
+        public static async Task<List<Instal>> GetSearchAsync(InstalInfo info)
         {
             var http = new HttpApi();
-            var response = await http.GetFromJsonAsync<List<Upload>>($"/api/Instal/Search/{FileName}");
+            var response = await http.GetFromJsonAsync<List<Instal>>($"/api/Instal/Search/{info.InstalFile}");
             if (response == null)
                 return [];
             return response;
