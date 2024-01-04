@@ -109,7 +109,7 @@ namespace FormInstal
             //Cesta = Cesta.AddCesta("Elektro.bundle");
             //Cesta = Cesta.AddCesta("Test.bundle");
             //požitá cesta pro instalaci
-<<<<<<< HEAD
+
             label2.Text = info.InstalPath;
         }
 
@@ -128,10 +128,7 @@ namespace FormInstal
                 Close(); 
                 return; 
             }
-=======
             label2.Text = Cesta;
-
->>>>>>> 1880b0cb8f1df444354f9cd022cccc461808573d
         }
     }
 }
