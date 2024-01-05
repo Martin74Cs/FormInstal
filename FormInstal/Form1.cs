@@ -17,64 +17,63 @@ namespace FormInstal
 
         private async void Instal_ClickAsync(object sender, EventArgs e)
         {
+
             //cesta kam bude provedena instalace
             string Cesta = label2.Text;
 
-            //melo by vždy existovat
-            if (!Directory.Exists(Cesta))
-            {
-                Directory.CreateDirectory(Cesta);
-            }
-            else
-            {
-                //PŘI PRVNÍ INSTALACI NESMÍ ADRESAŘ EXISTOVAT.
-                MessageBox.Show($"Adresár pro instalaci již existuje\nProgram je již instalován\nProgram bude UKONČEN");
-                Close();
-            }
-
-            //string Cesta = Path.Combine(Cesty.AppData, "Autodesk");
-            //if (!Directory.Exists(Path.GetDirectoryName(info.InstalPath)))
-            if (!Directory.Exists(Cesta))
-                { 
-                MessageBox.Show($"Adresař {Cesta} nebyl nalezen\nProgram bude UKONČEN"); 
-                Close(); 
-                return; 
-            }
-
-
-            var Akt = MenuInstal.Aktualizuj();
             //provedení instalace na zadanou cestu
             var zip = await Install.GetSearchAsync(info);
             //var zip = await Install.GetSearchAsync("instal.zip");
             if (zip.Count < 1)
             {
+                var Akt = MenuInstal.Aktualizuj();
+
+                //melo by vždy existovat
+                if (!Directory.Exists(Cesta))
+                    Directory.CreateDirectory(Cesta);
+                else
+                {
+                    //PŘI PRVNÍ INSTALACI NESMÍ ADRESAŘ EXISTOVAT.
+                    MessageBox.Show($"Adresár pro instalaci již existuje\nProgram je již instalován\nProgram bude UKONČEN");
+                    Close();
+                }
+
+                //string Cesta = Path.Combine(Cesty.AppData, "Autodesk");
+                //if (!Directory.Exists(Path.GetDirectoryName(info.InstalPath)))
+                if (!Directory.Exists(Cesta))
+                {
+                    MessageBox.Show($"Adresař {Cesta} nebyl nalezen\nProgram bude UKONČEN");
+                    Close();
+                    Environment.Exit(0);
+                }
+
                 MessageBox.Show($"Chyba hledání souboru v RestApi\nSoubor pravdepodobne není nahrán");
                 Akt.Close();
                 Close();
-                return;
-            }
+                Environment.Exit(0);
 
-            //posledni vracený soubor z rest api který je uložen v databazi
-            string RandomFilename = zip.Last().StoredFileName ?? "";
+                //posledni vracený soubor z rest api který je uložen v databazi
+                string RandomFilename = zip.Last().StoredFileName ?? "";
 
-            if (!await Install.Download(RandomFilename, Cesta))
-            {
-                MessageBox.Show($"Chyba pri extrakci souboru: {RandomFilename}");
+                if (!await Install.Download(RandomFilename, Cesta))
+                {
+                    MessageBox.Show($"Chyba pri extrakci souboru: {RandomFilename}");
+                    Akt.Close();
+                    Close();
+                    return;
+                }
+                //Na zadané ceste by měly existovat zadané soubory.
+
+                //Nactení manifestu z restApi
+                //ProgramInfo Nova = await HttpApi.DownloadFile<ProgramInfo>($"api/file/manifest");
+
+                //uložení manifestu do cesty instalce
+                //Nova.SaveJson(Cesta);
+
                 Akt.Close();
-                Close();
-                return;
+                Instal.Visible = false;
+                BStart.Visible = true;
             }
-            //Na zadané ceste by měly existovat zadané soubory.
-
-            //Nactení manifestu z restApi
-            //ProgramInfo Nova = await HttpApi.DownloadFile<ProgramInfo>($"api/file/manifest");
-
-            //uložení manifestu do cesty instalce
-            //Nova.SaveJson(Cesta);
-
-            Akt.Close();
-            Instal.Visible = false;
-            BStart.Visible = true;
             //Close();
             return;
         }
