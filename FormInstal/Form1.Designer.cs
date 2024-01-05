@@ -61,7 +61,7 @@
             Instal.Name = "Instal";
             Instal.Size = new Size(106, 42);
             Instal.TabIndex = 2;
-            Instal.Text = "Stáhnot";
+            Instal.Text = "Instalovat";
             Instal.UseVisualStyleBackColor = true;
             Instal.Click += Instal_ClickAsync;
             // 
@@ -72,7 +72,7 @@
             BStart.Name = "BStart";
             BStart.Size = new Size(106, 42);
             BStart.TabIndex = 3;
-            BStart.Text = "Instalovat";
+            BStart.Text = "Spustit";
             BStart.UseVisualStyleBackColor = true;
             BStart.Click += BStart_Click;
             // 

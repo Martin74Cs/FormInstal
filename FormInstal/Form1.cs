@@ -1,9 +1,11 @@
-﻿
-using FormInstal.API;
+﻿using FormInstal.API;
 using FormInstal.Trida;
+using IWshRuntimeLibrary;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Drawing;
+using System.ServiceModel.Syndication;
 
 namespace FormInstal
 {
@@ -26,6 +28,10 @@ namespace FormInstal
             //var zip = await Install.GetSearchAsync("instal.zip");
             if (zip.Count < 1)
             {
+                MessageBox.Show($"Chyba hledání souboru v RestApi\nSoubor pravděpodobně není nahrán");
+                Close();
+                Environment.Exit(0);
+            }
                 var Akt = MenuInstal.Aktualizuj();
 
                 //melo by vždy existovat
@@ -34,8 +40,9 @@ namespace FormInstal
                 else
                 {
                     //PŘI PRVNÍ INSTALACI NESMÍ ADRESAŘ EXISTOVAT.
-                    MessageBox.Show($"Adresár pro instalaci již existuje\nProgram je již instalován\nProgram bude UKONČEN");
+                    MessageBox.Show($"Adresár pro instalaci již existuje\nProgram je již instalován\nBude UKONČENO");
                     Close();
+                    Environment.Exit(0);
                 }
 
                 //string Cesta = Path.Combine(Cesty.AppData, "Autodesk");
@@ -46,11 +53,6 @@ namespace FormInstal
                     Close();
                     Environment.Exit(0);
                 }
-
-                MessageBox.Show($"Chyba hledání souboru v RestApi\nSoubor pravdepodobne není nahrán");
-                Akt.Close();
-                Close();
-                Environment.Exit(0);
 
                 //posledni vracený soubor z rest api který je uložen v databazi
                 string RandomFilename = zip.Last().StoredFileName ?? "";
@@ -73,7 +75,7 @@ namespace FormInstal
                 Akt.Close();
                 Instal.Visible = false;
                 BStart.Visible = true;
-            }
+      
             //Close();
             return;
         }
@@ -89,7 +91,7 @@ namespace FormInstal
                 info.SaveJson(Json);
             }
 
-            if (File.Exists(Path.Combine(info.InstalPath, info.StartFile)))
+            if (System.IO.File.Exists(Path.Combine(info.InstalPath, info.StartFile)))
             { 
                 Instal.Visible = false;
                 BStart.Visible = true;
@@ -115,7 +117,17 @@ namespace FormInstal
         private void BStart_Click(object sender, EventArgs e)
         {
             string Cesta = Path.Combine(info.InstalPath, info.StartFile);
-            if (File.Exists(Cesta))
+            string shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\TeZak.lnk";
+            string iconPath = Path.Combine(Cesty.AktualniAdresar, "StorageFile.ico");
+
+            WshShell shell = new WshShell();
+            IWshShortcut link = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+            link.TargetPath = Cesta;
+            link.IconLocation = iconPath;
+            link.Save();
+            MessageBox.Show("Byl vytvořen zásupce");
+
+            if (System.IO.File.Exists(Cesta))
             { 
                 Process.Start(Cesta, "");
                 Environment.Exit(0);
